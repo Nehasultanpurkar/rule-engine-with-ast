@@ -1,0 +1,41 @@
+Database Setup
+
+Create the schema file database/schema.sql:
+
+sql
+
+CREATE TABLE rules (
+    id SERIAL PRIMARY KEY,
+    rule_string TEXT NOT NULL,
+    rule_ast JSONB NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    modified_at TIMESTAMP DEFAULT NOW()
+);
+
+To initialize the database, create a Python script database/db_setup.py:
+
+python
+
+from models import db
+
+def setup_database():
+    db.create_all()
+
+if __name__ == '__main__':
+    setup_database()
+
+For storing rules and metadata, a relational database like PostgreSQL is ideal. You could also use MongoDB for flexibility in handling nested structures.
+
+PostgreSQL Schema
+CREATE TABLE rules (
+    id SERIAL PRIMARY KEY,
+    rule_name VARCHAR(255) NOT NULL,
+    rule_string TEXT NOT NULL,
+    ast JSONB NOT NULL
+);
+
+CREATE TABLE attributes (
+    id SERIAL PRIMARY KEY,
+    attribute_name VARCHAR(255) UNIQUE NOT NULL,
+    attribute_type VARCHAR(50) NOT NULL  -- e.g., 'string', 'number'
+);
