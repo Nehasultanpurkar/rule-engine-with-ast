@@ -1,0 +1,12 @@
+class Node:
+    def _init_(self, type: str, left=None, right=None, value=None):
+        self.type = type  # "operator" or "operand"
+        self.left = left  # Left child Node
+        self.right = right  # Right child Node
+        self.value = value  # Value for operand nodes (like age, department, etc.)
+
+# Example:
+# Rule 1: (age > 30 AND department = 'Sales') can be represented as:
+# AND
+# ├── Operand(age > 30)
+# └── Operand(department = 'Sales')
