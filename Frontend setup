@@ -1,0 +1,59 @@
+In frontend/index.html, create a simple UI:
+
+html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rule Engine</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Rule Engine UI</h1>
+    <form id="ruleForm">
+        <input type="text" id="ruleInput" placeholder="Enter rule string" />
+        <button type="submit">Create Rule</button>
+    </form>
+
+    <form id="evaluationForm">
+        <textarea id="userData" placeholder="Enter user data (JSON format)"></textarea>
+        <button type="submit">Evaluate Rule</button>
+    </form>
+
+    <div id="result"></div>
+<script src="app.js"></script>
+</body>
+</html>
+
+In frontend/app.js, handle form submissions:
+
+javascript
+document.getElementById('ruleForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    let ruleString = document.getElementById('ruleInput').value;
+    
+    let response = await fetch('/api/create_rule', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({rule_string: ruleString})
+    });
+    
+    let result = await response.json();
+    console.log("Rule Created:", result);
+});
+
+document.getElementById('evaluationForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    let userData = JSON.parse(document.getElementById('userData').value);
+    
+    let response = await fetch('/api/evaluate_rule', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({rule_id: 1, user_data: userData})  // Use appropriate rule_id
+    });
+    
+    let result = await response.json();
+    document.getElementById('result').innerText = result.result ? "Eligible" : "Not Eligible";
+});
+
