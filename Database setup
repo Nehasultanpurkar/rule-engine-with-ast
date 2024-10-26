@@ -1,0 +1,22 @@
+Create the schema file database/schema.sql:
+
+sql
+
+CREATE TABLE rules (
+    id SERIAL PRIMARY KEY,
+    rule_string TEXT NOT NULL,
+    rule_ast JSONB NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    modified_at TIMESTAMP DEFAULT NOW()
+);
+
+To initialize the database, create a Python script database/db_setup.py:
+
+python
+
+from models import db
+
+def setup_database():
+    db.create_all()
+      if __name__ == '__main__':
+    setup_database()
