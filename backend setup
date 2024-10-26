@@ -1,0 +1,55 @@
+Backend Setup (Flask Example)
+
+Step 1: Install Dependencies
+
+Create a requirements.txt file for the Python dependencies.
+Flask==2.0.3
+SQLAlchemy==1.4.29
+psycopg2-binary==2.9.3  # PostgreSQL connector
+pyparsing==3.0.6        # For rule parsing (or use custom logic)
+Install these dependencies:
+
+bash
+
+pip install -r backend/requirements.txt
+
+Step 2: Create Backend Logic (API)
+
+Inside backend/app.py:
+
+python
+
+from flask import Flask, request, jsonify
+from rule_engine import create_rule, combine_rules, evaluate_rule
+from models import db, Rule  # Assume SQLAlchemy is used for database ORM
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://user:password@localhost/rule_db'
+db.init_app(app)
+
+@app.route('/api/create_rule', methods=['POST'])
+def create_rule_api():
+    rule_string = request.json['rule_string']
+    rule_ast = create_rule(rule_string)
+    new_rule = Rule(rule_string=rule_string, rule_ast=rule_ast)
+    db.session.add(new_rule)
+    db.session.commit()
+    return jsonify({"rule_id": new_rule.id, "rule_ast": rule_ast})
+
+@app.route('/api/combine_rules', methods=['POST'])
+def combine_rules_api():
+    rules = request.json['rules']
+    combined_ast = combine_rules(rules)
+    return jsonify({"combined_rule_ast": combined_ast})
+
+@app.route('/api/evaluate_rule', methods=['POST'])
+def evaluate_rule_api():
+    rule_id = request.json['rule_id']
+    user_data = request.json['user_data']
+    rule = Rule.query.get(rule_id)
+    result = evaluate_rule(rule.rule_ast, user_data)
+    return jsonify({"result": result})
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
