@@ -1,0 +1,17 @@
+rule-engine-with-ast/
+├── backend/
+│   ├── app.py              # Main Flask/Django API application
+│   ├── rule_engine.py       # AST parsing, combining, and evaluation logic
+│   ├── models.py            # Database schema (ORM models)
+│   ├── requirements.txt     # Dependencies for backend (Flask, SQLAlchemy, etc.)
+├── frontend/
+│   ├── index.html           # Main UI interface (HTML, CSS, JavaScript)
+│   ├── app.js               # Frontend logic to interact with API
+│   ├── styles.css           # Basic styles for the UI
+├── database/
+│   ├── schema.sql           # SQL schema file for setting up PostgreSQL
+│   ├── db_setup.py          # Python script to initialize the DB and run migrations
+├── tests/
+│   ├── test_rule_engine.py  # Unit tests for rule engine logic
+├── README.md                # Project overview and setup instructions
+└── .gitignore               # Exclude unnecessary files
