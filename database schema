@@ -1,0 +1,15 @@
+For storing rules and metadata, a relational database like PostgreSQL is ideal. You could also use MongoDB for flexibility in handling nested structures.
+
+PostgreSQL Schema
+CREATE TABLE rules (
+    id SERIAL PRIMARY KEY,
+    rule_name VARCHAR(255) NOT NULL,
+    rule_string TEXT NOT NULL,
+    ast JSONB NOT NULL
+);
+
+CREATE TABLE attributes (
+    id SERIAL PRIMARY KEY,
+    attribute_name VARCHAR(255) UNIQUE NOT NULL,
+    attribute_type VARCHAR(50) NOT NULL  -- e.g., 'string', 'number'
+);
